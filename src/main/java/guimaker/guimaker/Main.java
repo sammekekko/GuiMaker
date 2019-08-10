@@ -50,7 +50,7 @@ public class Main extends JavaPlugin {
         if(guiStorage.getConfig().contains("Guis")) {
             for (String p : guiStorage.getConfig().getConfigurationSection("Guis").getKeys(false)) {
                 for (String gui : guiStorage.getConfig().getConfigurationSection("Guis." + p).getKeys(false)) {
-                    if (main.guiStorage.getConfig().getString("Guis." + p + "." + gui + ".command.name") != null) { // TODO fixa glitch
+                    if (main.guiStorage.getConfig().getString("Guis." + p + "." + gui + ".command.name") != null) { // TODO fixa glitchet som säger att det är null andra gången
                         String location = "Guis." + p + "." + gui;
                         getPlayerCommand.put(guiStorage.getConfig().getString("Guis." + p + "." + gui + ".command.name"), location);
                     }
