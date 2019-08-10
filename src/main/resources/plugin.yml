@@ -1,0 +1,9 @@
+name: GuiMaker
+version: ${project.version}
+main: guimaker.guimaker.Main
+api-version: 1.14
+
+commands:
+  gui:
+    description: hello
+    aliases: [g]

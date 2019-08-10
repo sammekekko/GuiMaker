@@ -1,0 +1,23 @@
+
+#Message was sent by console when it was not meant to run from there!
+console_error_message: "&8[&cGUI&8] &7You are unable to execute this command!"
+
+#No permission message
+no_perm_message: "&8[&cGUI&8] &7You are unable to execute this command!"
+
+#Aruments invalid
+arguments_invalid: "&8[&cGUI&8] &8Please use &b/<label> menu &8instead!"
+
+#Sending while renaming
+command_rename: "&8[&cGUI&8] &8Please don't use this command while renaming!"
+commandCreate:
+  title: "&"
+
+default:
+  size: 9
+  title: "&c&lNo Name"
+#Gui
+MainMenu:
+  title: "&8&lMain Menu"
+ItemAddMenu:
+  title: "&8&lItem Menu"
