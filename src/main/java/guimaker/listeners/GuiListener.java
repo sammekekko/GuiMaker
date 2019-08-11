@@ -88,26 +88,23 @@ public class GuiListener implements Listener{
                                 main.createCreateMenu(p);
                             }
                             break;
-                        case REDSTONE_BLOCK:
+                        case GREEN_WOOL:
                             ArrayList<String> disabledLore = new ArrayList<>();
-                            disabledLore.add(ChatColor.AQUA + "Left Click" + ChatColor.DARK_GRAY + " to " + ChatColor.GREEN + "enable");
-                            disabledLore.add(ChatColor.DARK_GRAY + "removing mode");
+                            disabledLore.add(ChatColor.DARK_GRAY + "Removing mode is " + ChatColor.RED + "disabled");
 
                             main.isRemoving.remove(p.getName());
-                            item.setType(Material.EMERALD_BLOCK);
-                            im.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Enable Remove Mode");
+                            item.setType(Material.RED_WOOL);
+                            im.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Toggle Remove Mode");
                             im.setLore(disabledLore);
                             item.setItemMeta(im);
                             break;
-                        case EMERALD_BLOCK:
-
+                        case RED_WOOL:
                             ArrayList<String> enabledLore = new ArrayList<>();
-                            enabledLore.add(ChatColor.AQUA + "Left Click" + ChatColor.DARK_GRAY + " to " + ChatColor.RED + "disable");
-                            enabledLore.add(ChatColor.DARK_GRAY + "removing mode");
+                            enabledLore.add(ChatColor.DARK_GRAY + "Removing mode is " + ChatColor.GREEN + "enabled");
 
                             main.isRemoving.add(p.getName());
-                            item.setType(Material.REDSTONE_BLOCK);
-                            im.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Disable Remove Mode");
+                            item.setType(Material.GREEN_WOOL);
+                            im.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Toggle Remove Mode");
                             im.setLore(enabledLore);
                             item.setItemMeta(im);
                             break;
@@ -116,7 +113,7 @@ public class GuiListener implements Listener{
                     }
                 }
             }
-        } else if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")) + ChatColor.DARK_GRAY  + " - " + Utils.chat(main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + main.currentSlot.get(p.getUniqueId().toString()) + ".title")))) {
+        } else if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")) + ChatColor.DARK_GRAY  + " - " + ChatColor.WHITE + Utils.chat(main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + main.currentSlot.get(p.getUniqueId().toString()) + ".title")))) {
             if(e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
                 e.setCancelled(true);
                 if (e.getClick() == ClickType.LEFT) {
@@ -190,7 +187,7 @@ public class GuiListener implements Listener{
                     }
                 }
             }
-        } else if (e.getView().getTitle().equals(Utils.chat(Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.DARK_GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"))) {
+        } else if (e.getView().getTitle().equals(Utils.chat(ChatColor.WHITE + Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.DARK_GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"))) {
             if(e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
                 e.setCancelled(true);
                 if (e.getClick() == ClickType.LEFT) {
@@ -209,7 +206,7 @@ public class GuiListener implements Listener{
                         case FEATHER:
                             main.isTransferring.add(p.getName());
                             p.getInventory().clear();
-                            main.createMainMenu(p);
+                            main.createCreateMenu(p);
                             break;
                         default:
                             break;
@@ -223,7 +220,7 @@ public class GuiListener implements Listener{
     public void onClose(InventoryCloseEvent e) {
         Player p = Bukkit.getPlayerExact(e.getPlayer().getName());
         if (p != null) {
-            if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")) + ChatColor.DARK_GRAY  + " - " + Utils.chat(main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + main.currentSlot.get(p.getUniqueId().toString()) + ".title"))) || e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title"))) || e.getView().getTitle().equals(Utils.chat(Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.DARK_GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"))) {
+            if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")) + ChatColor.DARK_GRAY  + " - " + ChatColor.WHITE + Utils.chat(main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + main.currentSlot.get(p.getUniqueId().toString()) + ".title"))) || e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title"))) || e.getView().getTitle().equals(Utils.chat(ChatColor.WHITE + Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.DARK_GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"))) {
                 if (!main.isTransferring.contains(p.getName())) {
                     p.getInventory().clear();
                     gh.loadInventory(p);

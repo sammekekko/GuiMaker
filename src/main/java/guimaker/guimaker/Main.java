@@ -1,21 +1,17 @@
 package guimaker.guimaker;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import guimaker.commands.CommandHandler;
-import guimaker.interfaces.GuiHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import guimaker.commands.GuiCommand;
 import guimaker.files.GuiStorage;
+import guimaker.interfaces.GuiHandler;
 import guimaker.listeners.GuiListener;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main extends JavaPlugin {
 
@@ -42,7 +38,6 @@ public class Main extends JavaPlugin {
     }
 
     public void createMainMenu(Player p) {
-        GuiHandler gh = new GuiHandler();
         gh.mainMenu(p);
     }
 
@@ -50,7 +45,7 @@ public class Main extends JavaPlugin {
         if(guiStorage.getConfig().contains("Guis")) {
             for (String p : guiStorage.getConfig().getConfigurationSection("Guis").getKeys(false)) {
                 for (String gui : guiStorage.getConfig().getConfigurationSection("Guis." + p).getKeys(false)) {
-                    if (main.guiStorage.getConfig().getString("Guis." + p + "." + gui + ".command.name") != null) {
+                    if (guiStorage.getConfig().contains("Guis." + p + "." + gui + ".command.name")) {
                         String location = "Guis." + p + "." + gui;
                         getPlayerCommand.put(guiStorage.getConfig().getString("Guis." + p + "." + gui + ".command.name"), location);
                     }
@@ -70,7 +65,11 @@ public class Main extends JavaPlugin {
         getCommand("gui").setExecutor(new GuiCommand(this));
         Bukkit.getPluginManager().registerEvents(new GuiListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CommandHandler(this), this);
-        loadAllCommands();
+        try {
+            loadAllCommands();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         main = this;
     }
 
