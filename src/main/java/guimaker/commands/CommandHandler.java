@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.Inventory;
 
+import java.lang.invoke.ConstantCallSite;
+
 public class CommandHandler implements Listener {
 
     private Main main;
@@ -24,28 +26,15 @@ public class CommandHandler implements Listener {
         String command = e.getMessage().toLowerCase();
         if (isGuiCommand(command) != null) {
             e.setCancelled(true);
-            if (main.getGuiStorage().getString(main.getPlayerCommand.get(command) + ".command.permission") != null) {
-                if (!p.hasPermission(main.getGuiStorage().getString(isGuiCommand(command)))) {
-                    p.sendMessage(main.getConfig().getString("no_perm_message"));
+            if (isGuiCommand(command) != null) {
+                if (!p.hasPermission(main.getGuiStorage().getString(isGuiCommand(command)) + ".permission")) {
+                    p.sendMessage(Utils.chat(main.getConfig().getString("no_perm_message")));
+                    p.sendMessage(main.getGuiStorage().getString(isGuiCommand(command) + ".permission"));
                     return;
                 }
             }
             openInventory(p, command);
         }
-    }
-
-    public String getCommandFromString(String s) {
-        if (main.guiStorage.getConfig().getConfigurationSection("Guis") != null) {
-            for (String uniqueID : main.guiStorage.getConfig().getConfigurationSection("Guis").getKeys(false)) {
-                for (String slot : main.guiStorage.getConfig().getConfigurationSection("Guis." + uniqueID).getKeys(false)) {
-                    String command = main.getGuiStorage().getString("Guis." + uniqueID + "." + slot + ".command.name");
-                    if (command.equals(s.toLowerCase())) {
-                        return "Guis." + uniqueID + "." + slot + ".command";
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     public String isGuiCommand(String label) {
@@ -54,7 +43,7 @@ public class CommandHandler implements Listener {
                 for (String slot : main.guiStorage.getConfig().getConfigurationSection("Guis." + uniqueID).getKeys(false)) {
                     String command = main.getGuiStorage().getString("Guis." + uniqueID + "." + slot + ".command.name");
                     if (("/" + command).equals(label.toLowerCase())) {
-                        return "Guis." + uniqueID + "." + slot + ".command.name";
+                        return "Guis." + uniqueID + "." + slot + ".command";
                     }
                 }
             }
@@ -62,9 +51,11 @@ public class CommandHandler implements Listener {
         return null;
     }
 
-    private void openInventory(Player p, String label) {
-        label = label.replace("/", "");
-        Inventory iv = Bukkit.createInventory(null, main.getGuiStorage().getInt(main.getPlayerCommand.get(label) + ".size"), Utils.chat(main.getGuiStorage().getString(main.getPlayerCommand.get(label) + ".title")));
+    public void openInventory(Player p, String cmd) {
+        if (cmd.contains("/")) {
+            cmd = cmd.replace("/" , "");
+        }
+        Inventory iv = Bukkit.createInventory(null, main.getGuiStorage().getInt( Main.main.getPlayerCommand.get(cmd) + ".size"), Utils.chat(main.getGuiStorage().getString(Main.main.getPlayerCommand.get(cmd) + ".title")));
 
         // TODO make items category under player yml
         p.openInventory(iv);

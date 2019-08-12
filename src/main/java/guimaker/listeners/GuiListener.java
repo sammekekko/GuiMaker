@@ -194,7 +194,6 @@ public class GuiListener implements Listener{
                     switch (e.getCurrentItem().getType()) {
                         case NAME_TAG:
                             p.getInventory().clear();
-                            // Rename och sedan skriv /gui create så får man det som man har i ivet under renamen
                             p.closeInventory();
                             p.sendTitle(ChatColor.AQUA + "Enter Command", ChatColor.DARK_GRAY + "Type in the command without the " + ChatColor.AQUA + "/", 5, 40, 5);
                             main.isRenaming.add(p.getName());
@@ -202,6 +201,16 @@ public class GuiListener implements Listener{
                             ConversationFactory cf = new ConversationFactory(main);
                             Conversation conv = cf.withFirstPrompt(new ConvPromptCMD()).withLocalEcho(true).buildConversation(p);
                             conv.begin();
+                            break;
+                        case REPEATER:
+                            p.getInventory().clear();
+                            p.closeInventory();
+                            p.sendTitle(ChatColor.AQUA + "Enter Permission", ChatColor.DARK_GRAY + "Type in the permission", 5, 40, 5);
+                            main.isRenaming.add(p.getName());
+                            main.isTransferring.add(p.getName());
+                            ConversationFactory cf2 = new ConversationFactory(main);
+                            Conversation conv2 = cf2.withFirstPrompt(new ConvPromptPerm()).withLocalEcho(true).buildConversation(p);
+                            conv2.begin();
                             break;
                         case FEATHER:
                             main.isTransferring.add(p.getName());

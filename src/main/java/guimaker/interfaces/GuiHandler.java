@@ -5,6 +5,7 @@ import guimaker.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -96,27 +97,58 @@ public class GuiHandler {
         renameLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + "Left Click" + ChatColor.DARK_GRAY + " to " + ChatColor.AQUA + "" + ChatColor.BOLD + "set " + ChatColor.DARK_GRAY +  "a");
         renameLore.add(ChatColor.DARK_GRAY + "command for this GUI");
         renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "WARNING: " + ChatColor.RESET + "" + ChatColor.DARK_GRAY + "Setting the command will");
-        renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "overwrite " + ChatColor.DARK_GRAY +  "any command with its name!");
+        renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "overwrite " + ChatColor.DARK_GRAY +  "any command with its name");
+
+        // Permissions Command
+        ArrayList<String> permLore = new ArrayList<>();
+        permLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Left Click" + ChatColor.DARK_GRAY + " to " + ChatColor.GREEN + "" + ChatColor.BOLD + "add " + ChatColor.DARK_GRAY + "permissions");
+        permLore.add(ChatColor.DARK_GRAY + "for your command");
 
         // Rename Preview
         ArrayList<String> renamePLore = new ArrayList<>();
         renamePLore.add(ChatColor.DARK_GRAY + "Current Command");
+
+        // Permissions Preview
+        ArrayList<String> permPLore = new ArrayList<>();
+        permPLore.add(ChatColor.DARK_GRAY + "Current Permission");
 
         // Back
         ArrayList<String> backLore = new ArrayList<>();
         backLore.add(ChatColor.AQUA + "" + ChatColor.BOLD +  "Left Click" + ChatColor.DARK_GRAY + " to");
         backLore.add(ChatColor.DARK_GRAY + "go " + ChatColor.AQUA + "" + ChatColor.BOLD + "back");
 
+
+        // Permissions Preview
+        ItemStack permP = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta permPMeta = permP.getItemMeta();
+        String displayNamePerm = Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".command.permission");
+        if (displayNamePerm != null) {
+            permPMeta.setDisplayName(Utils.chat(ChatColor.WHITE + displayNamePerm));
+        } else {
+            permPMeta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD+  "No Permission Set");
+        }
+        permPMeta.setLore(permPLore);
+        permP.setItemMeta(permPMeta);
+
+
+        // Rename Preview
         ItemStack renameP = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta renamePMeta = renameP.getItemMeta();
-        String displayName = Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".command.name");
-        if (displayName != null) {
-            renamePMeta.setDisplayName(Utils.chat(ChatColor.WHITE + "/" + displayName));
+        String displayNameRename = Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".command.name");
+        if (displayNameRename != null) {
+            renamePMeta.setDisplayName(Utils.chat(ChatColor.WHITE + "/" + displayNameRename));
         } else {
             renamePMeta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD +  "No Command Set");
         }
         renamePMeta.setLore(renamePLore);
         renameP.setItemMeta(renamePMeta);
+
+        // Permissions Button
+        ItemStack perm = new ItemStack(Material.REPEATER);
+        ItemMeta permMeta = perm.getItemMeta();
+        permMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Change Permissions");
+        permMeta.setLore(permLore);
+        perm.setItemMeta(permMeta);
 
         ItemStack rename = new ItemStack(Material.NAME_TAG);
         ItemMeta renameMeta = rename.getItemMeta();
@@ -132,8 +164,10 @@ public class GuiHandler {
 
         p.openInventory(cmdMenu);
 
-        cmdMenu.setItem(4, rename);
-        cmdMenu.setItem(13, renameP);
+        cmdMenu.setItem(5, perm);
+        cmdMenu.setItem(14, permP);
+        cmdMenu.setItem(3, rename);
+        cmdMenu.setItem(12, renameP);
         plrInv.setItem(27, back);
 
         Main.main.isTransferring.remove(p.getName());
