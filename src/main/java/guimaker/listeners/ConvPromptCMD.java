@@ -1,9 +1,8 @@
 package guimaker.listeners;
 
-import guimaker.commands.CommandHandler;
+import guimaker.commands.RegisterCommand;
 import guimaker.guimaker.Main;
 import guimaker.interfaces.GuiHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -14,6 +13,8 @@ public class ConvPromptCMD extends StringPrompt {
 
     private GuiHandler gh = new GuiHandler();
 
+    private RegisterCommand rc = new RegisterCommand();
+
     @Override
     public Prompt acceptInput(ConversationContext con, String answer) {
         Player p = (Player) con.getForWhom();
@@ -22,7 +23,8 @@ public class ConvPromptCMD extends StringPrompt {
             Main.main.guiStorage.getConfig().set(Main.main.getPlayerCommand.get(answer.toLowerCase()) + ".command.name", null);
             Main.main.getPlayerCommand.remove(answer.toLowerCase());
         }
-        gh.addValueGuiStorage("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".command.name", answer);
+        gh.addValueGuiStorage("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".command.name", answer.toLowerCase());
+        rc.registerCommand(answer.toLowerCase());
         Main.main.isRenaming.remove(p.getName());
         Main.main.getPlayerCommand.put(answer.toLowerCase(), "Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()));
         gh.commandMenu(p);
