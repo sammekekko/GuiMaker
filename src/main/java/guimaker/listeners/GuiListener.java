@@ -1,9 +1,14 @@
 package guimaker.listeners;
 
+import guimaker.commands.RegisterCommand;
+import guimaker.guimaker.Main;
 import guimaker.interfaces.GuiHandler;
+import guimaker.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
@@ -11,18 +16,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-
-import guimaker.guimaker.Main;
-import guimaker.utils.Utils;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.plugin.SimplePluginManager;
 
-import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class GuiListener implements Listener{
 
@@ -35,6 +38,8 @@ public class GuiListener implements Listener{
     }
 
     private GuiHandler gh = new GuiHandler();
+
+    private RegisterCommand rc = new RegisterCommand();
 
     @EventHandler
     public void onMenuClick(InventoryClickEvent e) {
@@ -77,6 +82,11 @@ public class GuiListener implements Listener{
                                 final ItemStack currentItem = e.getCurrentItem();
                                 final int slot = e.getSlot();
                                 e.getInventory().removeItem(currentItem);
+                                String location = "Guis." + p.getUniqueId() + "." + slot + ".command.name";
+                                if (Main.main.getGuiStorage().getString(location) != null) {
+                                   rc.unRegCMD(Main.main.getGuiStorage().getString(location));
+                                   Main.main.getPlayerCommand.remove(Main.main.getGuiStorage().getString(location));
+                                }
                                 main.getGuiStorage().set("Guis." + p.getUniqueId() + "." + slot, null);
                                 main.guiStorage.save();
                                 gh.sortMainGui(p, e.getInventory());

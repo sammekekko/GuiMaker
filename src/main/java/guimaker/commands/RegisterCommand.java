@@ -49,7 +49,7 @@ public class RegisterCommand {
 //        return null;
 //    }
 
-    private static PluginCommand getCommand(String name, Plugin plugin) {
+    public static PluginCommand getCommand(String name, Plugin plugin) {
         PluginCommand cmd = null;
         try {
             Constructor<PluginCommand> c = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
@@ -73,11 +73,11 @@ public class RegisterCommand {
         return cmd;
     }
 
-    private static CommandMap getCommandMap() {
+    public static CommandMap getCommandMap() {
         CommandMap cmap = null;
         try {
             if (Bukkit.getPluginManager() instanceof SimplePluginManager) {
-                Field f = SimplePluginManager.class.getDeclaredField("commandMap");
+                Field f = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
                 f.setAccessible(true);
                 cmap = (CommandMap) f.get(Bukkit.getPluginManager());
             }
@@ -91,6 +91,11 @@ public class RegisterCommand {
             e.printStackTrace();
         }
         return cmap;
+    }
+
+    public void unRegCMD(String name) {
+        PluginCommand cmd = RegisterCommand.getCommand(Main.main.getGuiStorage().getString(Main.main.getPlayerCommand.get(name) + ".command.name"), Main.main);
+        cmd.unregister(RegisterCommand.getCommandMap());
     }
 
 //    public RegisterCommand(String name) {
