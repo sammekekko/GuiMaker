@@ -5,7 +5,6 @@ import guimaker.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -86,10 +85,20 @@ public class GuiHandler {
         Main.main.isTransferring.remove(p.getName());
     }
 
+    public void addItemMenu(Player p) {
+        Inventory addItemMenu = Bukkit.createInventory(null, 36, Utils.chat(ChatColor.WHITE + Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title")));
+        Inventory plrInv = p.getInventory();
+        plrInv.clear();
+
+        // Lores
+
+    }
+
     public void commandMenu(Player p) {
         Inventory cmdMenu = Bukkit.createInventory(null, 18, Utils.chat(ChatColor.WHITE + Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.DARK_GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"));
         Inventory plrInv = p.getInventory();
         plrInv.clear();
+
         // Lores
 
         // Rename Command
