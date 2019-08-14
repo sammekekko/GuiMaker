@@ -47,7 +47,7 @@ public class ConvPromptCMD extends StringPrompt {
         Player p = (Player) con.getForWhom();
         p.getInventory().clear();
         gh.loadInventory(p);
-        return ChatColor.DARK_GRAY + "Enter your command without " + ChatColor.AQUA + "/";
+        return ChatColor.GRAY + "Enter your command without " + ChatColor.AQUA + "/";
     }
 
 }

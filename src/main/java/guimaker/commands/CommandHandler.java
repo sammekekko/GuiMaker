@@ -25,7 +25,7 @@ public class CommandHandler implements CommandExecutor {
             Player p = (Player) sender;
 
             if (Main.main.getPlayerCommand.get(cmd.getName()) == null) {
-                p.sendMessage(ChatColor.RED + "Please reload the server for the command to be fully deleted!");
+                p.sendMessage(ChatColor.RED + "Please reload the server for the command to be fully deleted.");
                 return false;
             }
             String permission = Main.main.getGuiStorage().getString(Main.main.getPlayerCommand.get(cmd.getName()) + ".command.permission");

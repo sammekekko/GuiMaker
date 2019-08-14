@@ -44,8 +44,11 @@ public class GuiListener implements Listener{
     @EventHandler
     public void onMenuClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        Inventory piv = p.getInventory();
         if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")))) {
+            System.out.println(e.getSlot());
+            if (e.getRawSlot() < e.getInventory().getSize()) {
+                System.out.println("Created Inventory");
+            }
             if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
                 e.setCancelled(true);
                 final ItemStack item = e.getCurrentItem();
@@ -67,11 +70,9 @@ public class GuiListener implements Listener{
                                 item.setType(Material.BARRIER);
                                 if (!db.contains(p.getName())) {
                                     db.add(p.getName());
-                                    Bukkit.getScheduler().scheduleSyncDelayedTask(main, new Runnable() {
-                                        public void run() {
-                                            item.setType(Material.ANVIL);
-                                            db.remove(p.getName());
-                                        }
+                                    Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
+                                        item.setType(Material.ANVIL);
+                                        db.remove(p.getName());
                                     }, 60L);
                                 }
                             }
@@ -100,17 +101,17 @@ public class GuiListener implements Listener{
                             break;
                         case GREEN_WOOL:
                             ArrayList<String> disabledLore = new ArrayList<>();
-                            disabledLore.add(ChatColor.DARK_GRAY + "Removing mode is " + ChatColor.RED + "disabled");
+                            disabledLore.add(ChatColor.GRAY + "Removing mode is " + ChatColor.RED + "" + ChatColor.BOLD + "disabled");
 
                             main.isRemoving.remove(p.getName());
                             item.setType(Material.RED_WOOL);
-                            im.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Toggle Remove Mode");
+                            im.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD +  "Toggle Remove Mode");
                             im.setLore(disabledLore);
                             item.setItemMeta(im);
                             break;
                         case RED_WOOL:
                             ArrayList<String> enabledLore = new ArrayList<>();
-                            enabledLore.add(ChatColor.DARK_GRAY + "Removing mode is " + ChatColor.GREEN + "enabled");
+                            enabledLore.add(ChatColor.GRAY + "Removing mode is " + ChatColor.GREEN + "" + ChatColor.BOLD + "enabled");
 
                             main.isRemoving.add(p.getName());
                             item.setType(Material.GREEN_WOOL);
@@ -123,7 +124,7 @@ public class GuiListener implements Listener{
                     }
                 }
             }
-        } else if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")) + ChatColor.DARK_GRAY  + " - " + ChatColor.WHITE + Utils.chat(main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + main.currentSlot.get(p.getUniqueId().toString()) + ".title")))) {
+        } else if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")) + ChatColor.GRAY  + " - " + ChatColor.WHITE + Utils.chat(main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + main.currentSlot.get(p.getUniqueId().toString()) + ".title")))) {
             if(e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
                 e.setCancelled(true);
                 if (e.getClick() == ClickType.LEFT) {
@@ -133,7 +134,7 @@ public class GuiListener implements Listener{
                             p.getInventory().clear();
                             // Rename och sedan skriv /gui create så får man det som man har i ivet under renamen
                             p.closeInventory();
-                            p.sendTitle(ChatColor.AQUA + "Display Name", ChatColor.DARK_GRAY + "Type in the Display Name of the GUI", 5, 40, 5);
+                            p.sendTitle(ChatColor.AQUA + "Display Name", ChatColor.GRAY + "Type in the Display Name of the GUI", 5, 40, 5);
                             main.isRenaming.add(p.getName());
                             main.isTransferring.add(p.getName());
                             ConversationFactory cf = new ConversationFactory(main);
@@ -157,11 +158,9 @@ public class GuiListener implements Listener{
                                     item.setType(Material.BARRIER);
                                     if (!db.contains(p.getName())) {
                                         db.add(p.getName());
-                                        Bukkit.getScheduler().scheduleSyncDelayedTask(main, new Runnable() {
-                                            public void run() {
-                                                item.setType(Material.BLAZE_ROD);
-                                                db.remove(p.getName());
-                                            }
+                                        Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
+                                            item.setType(Material.BLAZE_ROD);
+                                            db.remove(p.getName());
                                         }, 60L);
                                     }
                                 }
@@ -178,11 +177,9 @@ public class GuiListener implements Listener{
                                     item.setType(Material.BARRIER);
                                     if (!db.contains(p.getName())) {
                                         db.add(p.getName());
-                                        Bukkit.getScheduler().scheduleSyncDelayedTask(main, new Runnable() {
-                                            public void run() {
-                                                item.setType(Material.STICK);
-                                                db.remove(p.getName());
-                                            }
+                                        Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
+                                            item.setType(Material.STICK);
+                                            db.remove(p.getName());
                                         }, 60L);
                                     }
                                 }
@@ -197,7 +194,7 @@ public class GuiListener implements Listener{
                     }
                 }
             }
-        } else if (e.getView().getTitle().equals(Utils.chat(ChatColor.WHITE + Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.DARK_GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"))) {
+        } else if (e.getView().getTitle().equals(Utils.chat(ChatColor.WHITE + Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"))) {
             if(e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
                 e.setCancelled(true);
                 if (e.getClick() == ClickType.LEFT) {
@@ -205,7 +202,7 @@ public class GuiListener implements Listener{
                         case NAME_TAG:
                             p.getInventory().clear();
                             p.closeInventory();
-                            p.sendTitle(ChatColor.AQUA + "Enter Command", ChatColor.DARK_GRAY + "Type in the command without the " + ChatColor.AQUA + "/", 5, 40, 5);
+                            p.sendTitle(ChatColor.AQUA + "Enter Command", ChatColor.GRAY + "Type in the command without the " + ChatColor.AQUA + "/", 5, 40, 5);
                             main.isRenaming.add(p.getName());
                             main.isTransferring.add(p.getName());
                             ConversationFactory cf = new ConversationFactory(main);
@@ -215,7 +212,7 @@ public class GuiListener implements Listener{
                         case REPEATER:
                             p.getInventory().clear();
                             p.closeInventory();
-                            p.sendTitle(ChatColor.AQUA + "Enter Permission", ChatColor.DARK_GRAY + "Type in the permission", 5, 40, 5);
+                            p.sendTitle(ChatColor.AQUA + "Enter Permission", ChatColor.GRAY + "Type in the permission", 5, 40, 5);
                             main.isRenaming.add(p.getName());
                             main.isTransferring.add(p.getName());
                             ConversationFactory cf2 = new ConversationFactory(main);
@@ -239,7 +236,7 @@ public class GuiListener implements Listener{
     public void onClose(InventoryCloseEvent e) {
         Player p = Bukkit.getPlayerExact(e.getPlayer().getName());
         if (p != null) {
-            if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")) + ChatColor.DARK_GRAY  + " - " + ChatColor.WHITE + Utils.chat(main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + main.currentSlot.get(p.getUniqueId().toString()) + ".title"))) || e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title"))) || e.getView().getTitle().equals(Utils.chat(ChatColor.WHITE + Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.DARK_GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"))) {
+            if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")) + ChatColor.GRAY  + " - " + ChatColor.WHITE + Utils.chat(main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + main.currentSlot.get(p.getUniqueId().toString()) + ".title"))) || e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title"))) || e.getView().getTitle().equals(Utils.chat(ChatColor.WHITE + Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"))) {
                 if (!main.isTransferring.contains(p.getName())) {
                     p.getInventory().clear();
                     gh.loadInventory(p);

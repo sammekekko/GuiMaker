@@ -27,7 +27,7 @@ public class ConvPromptPerm extends StringPrompt {
         Player p = (Player) con.getForWhom();
         p.getInventory().clear();
         gh.loadInventory(p);
-        return ChatColor.DARK_GRAY + "Enter your permission:";
+        return ChatColor.GRAY + "Enter your permission:";
     }
 
 }

@@ -14,8 +14,11 @@ import java.util.ArrayList;
 
 public class GuiHandler {
 
+    public Inventory menuTory;
+
     public void mainMenu(Player p) {
         Inventory MainMenu = Bukkit.createInventory(null, 54, Utils.chat(Main.main.getConfig().getString("MainMenu.title")));
+        menuTory = MainMenu;
         p.getInventory().clear();
 
 
@@ -23,16 +26,16 @@ public class GuiHandler {
 
         // Add Gui
         ArrayList<String> createLore = new ArrayList<>();
-        createLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + "Left Click" + ChatColor.DARK_GRAY + " to create");
-        createLore.add(ChatColor.DARK_GRAY + "an interface");
+        createLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + "Left Click" + ChatColor.GRAY + " to create");
+        createLore.add(ChatColor.GRAY + "an interface");
 
         // Enabled Removing Lore
         ArrayList<String> enabledLore = new ArrayList<>();
-        enabledLore.add(ChatColor.DARK_GRAY + "Removing mode is " + ChatColor.GREEN + "enabled");
+        enabledLore.add(ChatColor.GRAY + "Removing mode is " + ChatColor.GREEN + "" + ChatColor.BOLD + "enabled");
 
         // Disabled Removing Lore
         ArrayList<String> disabledLore = new ArrayList<>();
-        disabledLore.add(ChatColor.DARK_GRAY + "Removing mode is " + ChatColor.RED + "disabled");
+        disabledLore.add(ChatColor.GRAY + "Removing mode is " + ChatColor.RED + "" + ChatColor.BOLD +  "disabled");
 
         // Add Gui
         ItemStack create = new ItemStack(Material.ANVIL);
@@ -92,70 +95,59 @@ public class GuiHandler {
 
         // Lores
 
+        //
+
     }
 
     public void commandMenu(Player p) {
-        Inventory cmdMenu = Bukkit.createInventory(null, 18, Utils.chat(ChatColor.WHITE + Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.DARK_GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"));
+        Inventory cmdMenu = Bukkit.createInventory(null, 9, Utils.chat(ChatColor.WHITE + Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title") + ChatColor.GRAY + " - " + ChatColor.RED + "" + ChatColor.BOLD + "Command Menu"));
         Inventory plrInv = p.getInventory();
         plrInv.clear();
 
         // Lores
 
         // Rename Command
+
+        String displayNameRename = Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".command.name");
         ArrayList<String> renameLore = new ArrayList<>();
-        renameLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + "Left Click" + ChatColor.DARK_GRAY + " to " + ChatColor.AQUA + "" + ChatColor.BOLD + "set " + ChatColor.DARK_GRAY +  "a");
-        renameLore.add(ChatColor.DARK_GRAY + "command for this GUI");
-        renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "WARNING: " + ChatColor.RESET + "" + ChatColor.DARK_GRAY + "Setting the command will");
-        renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "overwrite " + ChatColor.DARK_GRAY +  "any command with its name");
+        renameLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + "Left Click" + ChatColor.GRAY + " to " + ChatColor.AQUA + "" + ChatColor.BOLD + "set " + ChatColor.GRAY +  "a");
+        renameLore.add(ChatColor.GRAY + "command for this GUI");
+        renameLore.add("");
+        renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "WARNING: ");
+        renameLore.add(ChatColor.GRAY + "Setting the command will");
+        renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "overwrite " + ChatColor.GRAY +  "any command with its name");
+        renameLore.add("");
+        renameLore.add(ChatColor.GRAY + "Current Command:");
+        if (displayNameRename != null) {
+            renameLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + displayNameRename);
+        } else {
+            renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "No Command Set");
+        }
+
 
         // Permissions Command
+        String displayNamePerm = Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".command.permission");
+
         ArrayList<String> permLore = new ArrayList<>();
-        permLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Left Click" + ChatColor.DARK_GRAY + " to " + ChatColor.GREEN + "" + ChatColor.BOLD + "add " + ChatColor.DARK_GRAY + "permissions");
-        permLore.add(ChatColor.DARK_GRAY + "for your command");
-
-        // Rename Preview
-        ArrayList<String> renamePLore = new ArrayList<>();
-        renamePLore.add(ChatColor.DARK_GRAY + "Current Command");
-
-        // Permissions Preview
-        ArrayList<String> permPLore = new ArrayList<>();
-        permPLore.add(ChatColor.DARK_GRAY + "Current Permission");
+        permLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Left Click" + ChatColor.GRAY + " to " + ChatColor.GREEN + "" + ChatColor.BOLD + "add " + ChatColor.GRAY + "permissions");
+        permLore.add(ChatColor.GRAY + "for your command");
+        permLore.add("");
+        permLore.add(ChatColor.GRAY + "Current Permission:");
+        if (displayNamePerm != null) {
+            permLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + displayNamePerm);
+        } else {
+            permLore.add(ChatColor.RED + "" + ChatColor.BOLD + "No Permission Set");
+        }
 
         // Back
         ArrayList<String> backLore = new ArrayList<>();
-        backLore.add(ChatColor.AQUA + "" + ChatColor.BOLD +  "Left Click" + ChatColor.DARK_GRAY + " to");
-        backLore.add(ChatColor.DARK_GRAY + "go " + ChatColor.AQUA + "" + ChatColor.BOLD + "back");
-
-
-        // Permissions Preview
-        ItemStack permP = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta permPMeta = permP.getItemMeta();
-        String displayNamePerm = Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".command.permission");
-        if (displayNamePerm != null) {
-            permPMeta.setDisplayName(Utils.chat(ChatColor.WHITE + displayNamePerm));
-        } else {
-            permPMeta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD+  "No Permission Set");
-        }
-        permPMeta.setLore(permPLore);
-        permP.setItemMeta(permPMeta);
-
-
-        // Rename Preview
-        ItemStack renameP = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta renamePMeta = renameP.getItemMeta();
-        String displayNameRename = Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".command.name");
-        if (displayNameRename != null) {
-            renamePMeta.setDisplayName(Utils.chat(ChatColor.WHITE + "/" + displayNameRename));
-        } else {
-            renamePMeta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD +  "No Command Set");
-        }
-        renamePMeta.setLore(renamePLore);
-        renameP.setItemMeta(renamePMeta);
+        backLore.add(ChatColor.AQUA + "" + ChatColor.BOLD +  "Left Click" + ChatColor.GRAY + " to");
+        backLore.add(ChatColor.GRAY + "go " + ChatColor.AQUA + "" + ChatColor.BOLD + "back");
 
         // Permissions Button
         ItemStack perm = new ItemStack(Material.REPEATER);
         ItemMeta permMeta = perm.getItemMeta();
-        permMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Change Permissions");
+        permMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Add Permissions");
         permMeta.setLore(permLore);
         perm.setItemMeta(permMeta);
 
@@ -174,64 +166,54 @@ public class GuiHandler {
         p.openInventory(cmdMenu);
 
         cmdMenu.setItem(5, perm);
-        cmdMenu.setItem(14, permP);
         cmdMenu.setItem(3, rename);
-        cmdMenu.setItem(12, renameP);
         plrInv.setItem(27, back);
 
         Main.main.isTransferring.remove(p.getName());
     }
 
     public void createMenu(Player p) {
-        Inventory createMenu = Bukkit.createInventory(null, Main.main.getGuiStorage().getInt("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".size"), Utils.chat(Main.main.getConfig().getString("MainMenu.title")) + ChatColor.DARK_GRAY  + " - " + ChatColor.WHITE + Utils.chat(Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title")));
+        Inventory createMenu = Bukkit.createInventory(null, Main.main.getGuiStorage().getInt("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".size"), Utils.chat(Main.main.getConfig().getString("MainMenu.title")) + ChatColor.GRAY  + " - " + ChatColor.WHITE + Utils.chat(Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title")));
         Inventory plrInv = p.getInventory();
         plrInv.clear();
 
         // Lores
 
         // Rename Button
-        ArrayList<String> createLore = new ArrayList<>();
-        createLore.add(ChatColor.AQUA + "" + ChatColor.BOLD +  "Left Click" + ChatColor.DARK_GRAY + " to " + ChatColor.AQUA + "" + ChatColor.BOLD + "rename" + ChatColor.DARK_GRAY +  " the");
-        createLore.add(ChatColor.DARK_GRAY + "name of your GUI");
+        String displayName = Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title");
+        ArrayList<String> renameLore = new ArrayList<>();
+        renameLore.add(ChatColor.AQUA + "" + ChatColor.BOLD +  "Left Click" + ChatColor.GRAY + " to " + ChatColor.AQUA + "" + ChatColor.BOLD + "rename" + ChatColor.GRAY +  " the");
+        renameLore.add(ChatColor.GRAY + "name of your GUI");
+        renameLore.add("");
+        renameLore.add(ChatColor.GRAY + "Current Name:");
+        if (displayName != null) {
+            renameLore.add(Utils.chat(ChatColor.WHITE + displayName));
+        } else {
+            renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "No Name");
+        }
 
 
         // Back Button
         ArrayList<String> backLore = new ArrayList<>();
-        backLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + "Left Click" + ChatColor.DARK_GRAY + " to");
-        backLore.add(ChatColor.DARK_GRAY + "go " + ChatColor.AQUA + "" + ChatColor.BOLD + "back");
+        backLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + "Left Click" + ChatColor.GRAY + " to");
+        backLore.add(ChatColor.GRAY + "go " + ChatColor.AQUA + "" + ChatColor.BOLD + "back");
 
         // Add Row Button
         ArrayList<String> rowLore = new ArrayList<>();
-        rowLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Left Click" + ChatColor.DARK_GRAY + " to " + ChatColor.GREEN + "" + ChatColor.BOLD + "add");
-        rowLore.add(ChatColor.DARK_GRAY + "a row to your GUI");
+        rowLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Left Click" + ChatColor.GRAY + " to " + ChatColor.GREEN + "" + ChatColor.BOLD + "add");
+        rowLore.add(ChatColor.GRAY + "a row to your GUI");
 
         // Remove Row Button
         ArrayList<String> removeRowLore = new ArrayList<>();
-        removeRowLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Left Click" + ChatColor.DARK_GRAY + " to " + ChatColor.RED + "" + ChatColor.BOLD + "remove");
-        removeRowLore.add(ChatColor.DARK_GRAY + "a row from your GUI");
+        removeRowLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Left Click" + ChatColor.GRAY + " to " + ChatColor.RED + "" + ChatColor.BOLD + "remove");
+        removeRowLore.add(ChatColor.GRAY + "a row from your GUI");
 
         // Bind To Command Button
         ArrayList<String> bindLore = new ArrayList<>();
-        bindLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + "Left Click" + ChatColor.DARK_GRAY + " to "  + ChatColor.AQUA + "" + ChatColor.BOLD + "bind " + ChatColor.DARK_GRAY + "this");
-        bindLore.add(ChatColor.DARK_GRAY + "GUI to a command");
-
-        // Rename Display Lore
-        ArrayList<String> renamePLore = new ArrayList<>();
-        renamePLore.add(ChatColor.DARK_GRAY + "Current Name");
+        bindLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + "Left Click" + ChatColor.GRAY + " to "  + ChatColor.AQUA + "" + ChatColor.BOLD + "bind " + ChatColor.GRAY + "this");
+        bindLore.add(ChatColor.GRAY + "GUI to a command");
 
         // Item Setting
-
-        // Rename Display Button
-        ItemStack renameP = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta renamePMeta = renameP.getItemMeta();
-        String displayName = Main.main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".title");
-        if (displayName != null) {
-            renamePMeta.setDisplayName(Utils.chat(ChatColor.WHITE + displayName));
-        } else {
-            renamePMeta.setDisplayName(ChatColor.RED + "No Command Set");
-        }
-        renamePMeta.setLore(renamePLore);
-        renameP.setItemMeta(renamePMeta);
 
         // Bind Button
         ItemStack bind = new ItemStack(Material.REDSTONE_TORCH);
@@ -265,14 +247,13 @@ public class GuiHandler {
         ItemStack DisplayName = new ItemStack(Material.NAME_TAG);
         ItemMeta DisplayNameMeta = DisplayName.getItemMeta();
         DisplayNameMeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Rename");
-        DisplayNameMeta.setLore(createLore);
+        DisplayNameMeta.setLore(renameLore);
         DisplayName.setItemMeta(DisplayNameMeta);
 
         p.openInventory(createMenu);
 
         plrInv.setItem(11, removeRow);
         plrInv.setItem(13, DisplayName);
-        plrInv.setItem(22, renameP);
         plrInv.setItem(15, row);
         plrInv.setItem(27, back);
         plrInv.setItem(35, bind);

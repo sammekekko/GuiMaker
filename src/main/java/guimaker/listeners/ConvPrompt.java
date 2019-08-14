@@ -28,7 +28,7 @@ public class ConvPrompt extends StringPrompt {
         Player p = (Player) con.getForWhom();
         p.getInventory().clear();
         gh.loadInventory(p);
-        return ChatColor.DARK_GRAY + "Enter your new " + ChatColor.AQUA +  "Display Name:";
+        return ChatColor.GRAY + "Enter your new " + ChatColor.AQUA +  "Display Name:";
     }
 
 }
