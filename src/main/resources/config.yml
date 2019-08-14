@@ -10,14 +10,14 @@ arguments_invalid: "&8[&cGUI&8] &8Please use &b/<label> menu &8instead!"
 
 #Sending while renaming
 command_rename: "&8[&cGUI&8] &8Please don't use this command while renaming!"
-commandCreate:
-  title: "&"
 
 default:
   size: 9
   title: "&c&lNo Name"
+  material: CHEST
+  script: "&c&lNo Script Chosen"
+  permission_name: "&c&lNo Permission Set"
+  command_name: "&c&lNo Command Set"
 #Gui
 MainMenu:
   title: "&8&lMain Menu"
-ItemAddMenu:
-  title: "&8&lItem Menu"

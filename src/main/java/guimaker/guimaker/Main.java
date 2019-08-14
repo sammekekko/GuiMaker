@@ -40,6 +40,8 @@ public class Main extends JavaPlugin {
 
     public HashMap<String, String> getPlayerCommand = new HashMap<>();
 
+    public HashMap<String, Integer> currentItemSlot = new HashMap<>();
+
     public void createCreateMenu(Player p) {
         gh.createMenu(p);
     }

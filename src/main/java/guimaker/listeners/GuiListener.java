@@ -45,10 +45,6 @@ public class GuiListener implements Listener{
     public void onMenuClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")))) {
-            System.out.println(e.getSlot());
-            if (e.getRawSlot() < e.getInventory().getSize()) {
-                System.out.println("Created Inventory");
-            }
             if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
                 e.setCancelled(true);
                 final ItemStack item = e.getCurrentItem();
@@ -125,6 +121,16 @@ public class GuiListener implements Listener{
                 }
             }
         } else if (e.getView().getTitle().equals(Utils.chat(main.getConfig().getString("MainMenu.title")) + ChatColor.GRAY  + " - " + ChatColor.WHITE + Utils.chat(main.getGuiStorage().getString("Guis." + p.getUniqueId() + "." + main.currentSlot.get(p.getUniqueId().toString()) + ".title")))) {
+            if (e.getRawSlot() < e.getInventory().getSize()) {
+                if (e.getCurrentItem() == null && e.getRawSlot() != -999) {
+                    main.getGuiStorage().set("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".items." + e.getRawSlot() + ".stack", Main.main.getConfig().getString("default.material"));
+                    main.getGuiStorage().set("Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".items." + e.getRawSlot() + ".name", Main.main.getConfig().getString("default.title"));
+                    main.currentItemSlot.put(p.getUniqueId().toString(), e.getRawSlot());
+                    main.guiStorage.save();
+                    main.isTransferring.add(p.getName());
+                    gh.addItemMenu(p);
+                }
+            }
             if(e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
                 e.setCancelled(true);
                 if (e.getClick() == ClickType.LEFT) {

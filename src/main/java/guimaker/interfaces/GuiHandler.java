@@ -93,10 +93,136 @@ public class GuiHandler {
         Inventory plrInv = p.getInventory();
         plrInv.clear();
 
+        String itemPath = "Guis." + p.getUniqueId() + "." + Main.main.currentSlot.get(p.getUniqueId().toString()) + ".items" + Main.main.currentItemSlot.get(p.getUniqueId().toString());
+        String displayName = Utils.chat(Main.main.getGuiStorage().getString(itemPath + ".name"));
+        String material = Main.main.getGuiStorage().getString(itemPath + ".material");
+        String script = Main.main.getGuiStorage().getString(itemPath + ".script");
+
+        /*
+         0 1 2 3 4 5 6 7 8
+         9 10 11 12 13 14 15 16 17
+         18 19 20 21 22 23 24 25 26
+         27 28 29 30 31 32 33 34 35
+         - - - - - - - - -
+         - - - - I - - - -
+         - R - L - M - S -
+         - - - - - - - - -
+        I = ItemPreview
+        R = Rename
+        L = Lore
+        M = Material
+        S = Scripts
+         */
+
         // Lores
 
-        //
+        // ItemPreview Lore
+        ArrayList<String> itemPLore = new ArrayList<>();
+        String path = itemPath + ".lores";
+        if (Main.main.getGuiStorage().contains(path)) {
+            for (String s : Main.main.getGuiStorage().getStringList(path)) { // TODO when adding LORES make sure u set it as a string list
+                itemPLore.add(Utils.chat(ChatColor.WHITE + s));
+            }
+        }
 
+        // Scripts Lore
+        ArrayList<String> scriptLore = new ArrayList<>();
+        scriptLore.add(ChatColor.AQUA + "" + ChatColor.BOLD +  "Left Click" + ChatColor.GRAY + " to " + ChatColor.AQUA + "" + ChatColor.BOLD + "add" + ChatColor.GRAY +  " a");
+        scriptLore.add(ChatColor.GRAY + "script for your item");
+        scriptLore.add("");
+        scriptLore.add(ChatColor.GRAY + "Current Script:");
+        if (script == null) {
+            script = Main.main.getConfig().getString("default.script");
+        }
+        scriptLore.add(script);
+
+        // Material Lore
+        ArrayList<String> materialLore = new ArrayList<>();
+        materialLore.add(ChatColor.AQUA + "" + ChatColor.BOLD +  "Left Click" + ChatColor.GRAY + " to " + ChatColor.AQUA + "" + ChatColor.BOLD + "change" + ChatColor.GRAY +  " the");
+        materialLore.add(ChatColor.GRAY + "material of your item");
+        materialLore.add("");
+        materialLore.add(ChatColor.GRAY + "Current Material:");
+        if (material == null) {
+            material = Main.main.getConfig().getString("default.material").replace("Material.", "");
+        }
+        materialLore.add(ChatColor.AQUA + material);
+
+        // Rename Lore
+        ArrayList<String> renameLore = new ArrayList<>();
+        renameLore.add(ChatColor.AQUA + "" + ChatColor.BOLD +  "Left Click" + ChatColor.GRAY + " to " + ChatColor.AQUA + "" + ChatColor.BOLD + "rename");
+        renameLore.add(ChatColor.GRAY + "your item");
+        renameLore.add("");
+        renameLore.add(ChatColor.GRAY + "Current Name:");
+        if (displayName == null) {
+            displayName = Utils.chat(Main.main.getConfig().getString("default.title"));
+        }
+        renameLore.add(ChatColor.WHITE + displayName);
+
+        // Lore Lore
+        ArrayList<String> loreLore = new ArrayList<>();
+        loreLore.add(ChatColor.AQUA + "" + ChatColor.BOLD +  "Left Click" + ChatColor.GRAY + " to " + ChatColor.AQUA + "" + ChatColor.BOLD + "add" + ChatColor.GRAY +  " a");
+        loreLore.add(ChatColor.GRAY + "lore for your item");
+        loreLore.add(ChatColor.RED + "" + ChatColor.BOLD + "Right Click" + ChatColor.GRAY + " to " + ChatColor.RED + "" + ChatColor.BOLD + "remove" + ChatColor.GRAY + " all");
+        loreLore.add(ChatColor.GRAY + "lores from your item");
+        loreLore.add("");
+        loreLore.add(ChatColor.GRAY + "Current Lores:");
+        for (String s : itemPLore) {
+            loreLore.add(Utils.chat(s));
+        }
+
+        // Items
+
+        // Material Button
+        ItemStack materialButton = new ItemStack(Material.WHITE_WOOL);
+        ItemMeta materialMeta = materialButton.getItemMeta();
+        materialMeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Change Material");
+        materialMeta.setLore(materialLore);
+        materialButton.setItemMeta(materialMeta);
+
+        // Script Button
+        ItemStack scriptButton = new ItemStack(Material.COMMAND_BLOCK);
+        ItemMeta scriptMeta = scriptButton.getItemMeta();
+        scriptMeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Add Script");
+        scriptMeta.setLore(scriptLore);
+        scriptButton.setItemMeta(scriptMeta);
+
+        // Lore Button
+        ItemStack lore = new ItemStack(Material.BOOKSHELF);
+        ItemMeta loreMeta = lore.getItemMeta();
+        loreMeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Add Lores");
+        loreMeta.setLore(loreLore);
+        lore.setItemMeta(loreMeta);
+
+        // Rename Button
+        ItemStack rename = new ItemStack(Material.NAME_TAG);
+        ItemMeta renameMeta = rename.getItemMeta();
+        renameMeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Rename");
+        renameMeta.setLore(renameLore);
+        rename.setItemMeta(renameMeta);
+
+
+        // ItemPreview
+        Material mat = Material.getMaterial(Main.main.getGuiStorage().getString(itemPath + ".material"));
+        if (mat == null) {
+            mat = (Material.getMaterial(Main.main.getConfig().getString("default.material")));
+        }
+        ItemStack itemP = new ItemStack(mat);
+        ItemMeta itemPMeta = itemP.getItemMeta();
+        if (displayName == null) {
+            displayName = Main.main.getConfig().getString("default.title");
+        }
+        itemPMeta.setDisplayName(displayName);
+        itemPMeta.setLore(itemPLore);
+        itemP.setItemMeta(itemPMeta);
+        // TODO continue
+
+        addItemMenu.setItem(13, itemP);
+        addItemMenu.setItem(19, rename);
+        addItemMenu.setItem(15, lore);
+        addItemMenu.setItem(17, materialButton);
+        addItemMenu.setItem(19, scriptButton);
+
+        p.openInventory(addItemMenu);
     }
 
     public void commandMenu(Player p) {
@@ -121,7 +247,7 @@ public class GuiHandler {
         if (displayNameRename != null) {
             renameLore.add(ChatColor.AQUA + "" + ChatColor.BOLD + displayNameRename);
         } else {
-            renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "No Command Set");
+            renameLore.add(Utils.chat(Main.main.getConfig().getString("default.command_name")));
         }
 
 
@@ -136,7 +262,7 @@ public class GuiHandler {
         if (displayNamePerm != null) {
             permLore.add(ChatColor.GREEN + "" + ChatColor.BOLD + displayNamePerm);
         } else {
-            permLore.add(ChatColor.RED + "" + ChatColor.BOLD + "No Permission Set");
+            permLore.add(Utils.chat(Main.main.getConfig().getString("default.permission_name")));
         }
 
         // Back
@@ -189,9 +315,8 @@ public class GuiHandler {
         if (displayName != null) {
             renameLore.add(Utils.chat(ChatColor.WHITE + displayName));
         } else {
-            renameLore.add(ChatColor.RED + "" + ChatColor.BOLD + "No Name");
+            renameLore.add(Utils.chat(Main.main.getConfig().getString("default.title")));
         }
-
 
         // Back Button
         ArrayList<String> backLore = new ArrayList<>();
@@ -249,6 +374,8 @@ public class GuiHandler {
         DisplayNameMeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Rename");
         DisplayNameMeta.setLore(renameLore);
         DisplayName.setItemMeta(DisplayNameMeta);
+
+        // TODO add Items loop for this GUI
 
         p.openInventory(createMenu);
 
